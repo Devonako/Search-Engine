@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'application' // To create an executable JAR
+}
+
+group 'com.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.0-M1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.11.0-M1'
+
+    // https://mvnrepository.com/artifact/org.tartarus.snowball/snowball-stemmer
+    implementation group: 'org.tartarus.snowball', name: 'snowball-stemmer', version: '2.2.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+// To create an executable JAR
+application {
+    mainClass = 'SearchEngineGUI' // Replace with your main class
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'SearchEngineGUI' // Replace with your main class
+    }
+
+    // This line is to include all dependencies in the JAR
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+}
